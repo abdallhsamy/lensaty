@@ -17,7 +17,11 @@ class HomeController extends Controller
           'lang'=>'required|string|max:2|in:en,ar',
         ]);
         if($validator->fails()) {
-          return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//          return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$validator->errors(),
+            ]);
         }
     	$token = $request->token;
     	$lang = $request->lang ? $request->lang : 'en';
@@ -30,7 +34,7 @@ class HomeController extends Controller
         $home = array();
 
         $advertisement = Advertisement::get(['advertisements.id','advertisements.image_'.$lang.' as image']);
-        
+
 
 
     	$products = Product::select(
@@ -43,7 +47,7 @@ class HomeController extends Controller
     	// 	$products->where('products.brand_id','=',$brand_id);
     	// }
     	// if($price){
-    	// 	$products->where('products.price','>=',$price);	
+    	// 	$products->where('products.price','>=',$price);
     	// }
     	// if($rate){
     	// 	$products->having('product_rate','>=',$rate);
@@ -58,13 +62,22 @@ class HomeController extends Controller
 
         $home['advertisement'] = $advertisement;
         $home['new_arrival'] = $products;
-        
+
 
         if(count($home)>0){
-            return '{"code":"200","message":"Success","data":'.json_encode($home).'}';
+//            return '{"code":"200","message":"Success","data":'.json_encode($home).'}';
+            return response([
+                'status'    =>200,
+                'message'   =>'Success',
+                'data'      =>$home,
+            ]);
         }else{
             $error = 'There is no data';
-            return '{"code":"400","message":'.'['.json_encode($error).']}';
+//            return '{"code":"400","message":'.'['.json_encode($error).']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$error,
+            ]);
         }
 
     }

@@ -23,6 +23,10 @@ class ResetPasswordController extends Controller
         ]);
         if($validator->fails()) {
             return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//            return response([
+//                'status'    =>400,
+//                'message'   =>$validator->errors(),
+//            ]);
         }
 
         $email = $request->email;
@@ -40,11 +44,20 @@ class ResetPasswordController extends Controller
             $email = $request->email;
             Mail::to($email)
                 ->send(new SendMail($data));
-            return '{"code":"200","message":"Success","data":'.'['.json_encode($resetPassword).']}';
+//            return '{"code":"200","message":"Success","data":'.'['.json_encode($resetPassword).']}';
+            return response([
+                'status'    =>200,
+                'message'   =>'Success',
+                'data'      =>$resetPassword
+            ]);
 
         }else{
             $error = 'The Email Not Exist';
-            return '{"code":"400","message":'.'['.json_encode($error).']}';
+//            return '{"code":"400","message":'.'['.json_encode($error).']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$error,
+            ]);
         }
     }
 
@@ -54,16 +67,29 @@ class ResetPasswordController extends Controller
             'code'=>'required|min:4|max:4',
         ]);
         if($validator->fails()) {
-            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$validator->errors(),
+            ]);
         }
         $email = $request->email;
         $code = $request->code;
         $checkCode = PasswordResetCode::where('email',$email)->where('code',$code)->first();
         if($checkCode){
-            return '{"code":"200","message":"Success","data":'.'['.json_encode($checkCode).']}';
+//            return '{"code":"200","message":"Success","data":'.'['.json_encode($checkCode).']}';
+            return response([
+                    'status'    =>200,
+                    'message'   =>'Success',
+                    'data'      =>$checkCode
+                ]);
         }else{
             $error = 'The Code is invalid';
-            return '{"code":"400","message":'.'['.json_encode($error).']}';
+//            return '{"code":"400","message":'.'['.json_encode($error).']}';
+            return response([
+                    'status'    =>400,
+                    'message'   =>$error,
+                ]);
         }
     }
 
@@ -73,7 +99,11 @@ class ResetPasswordController extends Controller
             'newpassword' => 'required|string|min:8',
         ]);
         if($validator->fails()) {
-            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$validator->errors(),
+            ]);
         }
         $email = $request->email;
         $newPassword = Hash::make($request->newpassword);
@@ -83,6 +113,10 @@ class ResetPasswordController extends Controller
         $deleteCode = PasswordResetCode::where('email',$email)->first();
         $deleteCode->delete();
         $success = 'Password Updated Successfully';
-        return '{"code":"200","message":'.'['.json_encode($success).']}';
+//        return '{"code":"200","message":'.'['.json_encode($success).']}';
+        return response([
+            'status'    =>200,
+            'message'   =>$success,
+        ]);
     }
 }

@@ -25,11 +25,15 @@ class AuthController extends Controller
      ]);
      if($validator->fails()) {
       // return '{"code":"400","message":"Error","data":' . '[' . json_encode($validator->errors()) . ']}';
-     	return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//     	return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$validator->errors(),
+         ]);
      }
 
     // $lang = isset($request->lang) ? $request->lang : 'en';
-    
+
 	    $email= isset($request->email) ? $request->email : '';
 	    $username = isset($request->username) ? $request->username : '';
 	    $password=$request->password;
@@ -61,12 +65,23 @@ class AuthController extends Controller
 
 	            User::where('id',$userID)->update(['remember_token'=>Str::random(20)]);
 
-	            return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+//	            return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+                return response([
+                    'status'    =>200,
+                    'message'   =>'Success',
+                    'data'      =>$user,
+                ]);
 	       }else{
 	            $error = 'Email or Password is incorrect';
 	            // return '{"code":"400","message":"Error","data":'.'['.json_encode($error).']}';
-	            return '{"code":"400","message":'.'['.json_encode($error).']}';
-	       }  
+//	            return '{"code":"400","message":'.'['.json_encode($error).']}';
+//	            return '{"code":"400","message":'.'['.json_encode($error).']}';
+                return response([
+                    'status'    =>400,
+                    'message'   =>$error,
+                ]);
+//                return responder()->error('login_error','login filed')->data(['error'=>'cannot Login']);
+	       }
 	    }
 
 	    elseif($user1!=null){
@@ -92,16 +107,29 @@ class AuthController extends Controller
 	                // $user1 = User::with('UsersSocial')->with('Country')->with('City')->find($userID);
 	            }
 	            User::where('id',$userID)->update(['remember_token'=>Str::random(20)]);
-	            return '{"code":"200","message":"Success","data":'.json_encode($user1).'}';
+//	            return '{"code":"200","message":"Success","data":'.json_encode($user1).'}';
+                return response([
+                    'status'    =>200,
+                    'message'   =>'Success',
+                    'data'      =>$user1,
+                ]);
 	       }else{
 	            $error = 'Username or Password is incorrect';
-	            return '{"code":"400","message":'.'['.json_encode($error).']}';
-	       }  
+//	            return '{"code":"400","message":'.'['.json_encode($error).']}';
+                return response([
+                    'status'    =>400,
+                    'message'   =>$error,
+                ]);
+	       }
 	    }
 
 	    else{
 	        $error = 'Invalid Credentials';
-	        return '{"code":"400","message":'.'['.json_encode($error).']}';
+//	        return '{"code":"400","message":'.'['.json_encode($error).']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$error,
+            ]);
 	    }
     }
 
@@ -115,7 +143,11 @@ class AuthController extends Controller
        'last_name'=>'required|string',
      ]);
      if($validator->fails()) {
-       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$validator->errors(),
+         ]);
      }
 
     $token = $request->access_token;
@@ -132,12 +164,21 @@ class AuthController extends Controller
              $query->select('users_socials.access_token','users_socials.user_id');
            }])->select('users.id')->get();
 
-         return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+//         return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+         return response([
+             'status'    =>200,
+             'message'   =>'Success',
+             'data'      =>$user,
+         ]);
      }
 
   if(empty($user) && $userId){
        $error = 'Email has been taken';
-       return '{"code":"400","message":'.'['.json_encode($error).']}';
+//       return '{"code":"400","message":'.'['.json_encode($error).']}';
+      return response([
+          'status'    =>400,
+          'message'   =>$error,
+      ]);
   }
 
 
@@ -160,7 +201,11 @@ class AuthController extends Controller
            $user = User::where('id',$newUser->id)->with(['UsersSocial'=>function($query){
              $query->select('users_socials.access_token','users_socials.user_id');
            }])->select('users.id')->get();
-         return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+//         return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+         return response([
+             'status'    =>200,
+             'message'   =>$user,
+         ]);
   }
    }
 
@@ -180,7 +225,12 @@ class AuthController extends Controller
 	     ]);
 
 	     if($validator->fails()){
-	   return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//	   return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+             return response([
+                 'status'    =>400,
+                 'message'   =>$validator->errors(),
+             ]);
+
 	     }
 	     $password=Hash::make($request->password);
 
@@ -214,7 +264,12 @@ class AuthController extends Controller
 	        $error = 'Error';
 	    return '{"code":"400","message":'.'['.json_encode($error).']}';
 	       }else{
-	      return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+//	      return '{"code":"200","message":"Success","data":'.json_encode($user).'}';
+               return response([
+                   'status'    =>200,
+                   'message'   =>'Success',
+                   'data'=>$user,
+               ]);
 	     }
     }
 
@@ -224,7 +279,11 @@ class AuthController extends Controller
        'user_id'=>'required|integer'
      ]);
      if($validator->fails()) {
-       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$validator->errors(),
+         ]);
      }
      $token = $request->token;
      $user_id = $request->user_id;
@@ -233,10 +292,18 @@ class AuthController extends Controller
         if($checkUserToken){
             $socialLogin = UsersSocial::where('access_token',$token)->where('user_id',$user_id)->delete();
          $success = 'Logout Successfully';
-         return '{"code":"200","message":'.'['.json_encode($success).']}';
+//         return '{"code":"200","message":'.'['.json_encode($success).']}';
+            return response([
+                'status'    =>200,
+                'message'   =>$success,
+            ]);
         }else{
          $error = 'Invalid token or user id';
-         return '{"code":"400","message":'.'['.json_encode($error).']}';
+//         return '{"code":"400","message":'.'['.json_encode($error).']}';
+            return response([
+                'status'    =>400,
+                'message'   =>$error,
+            ]);
         }
     }
 
@@ -245,15 +312,28 @@ class AuthController extends Controller
        'lang'=>'required|string|max:2|in:en,ar',
      ]);
      if($validator->fails()) {
-       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$validator->errors(),
+         ]);
      }
      $lang = $request->lang ? $request->lang : 'en';
      $countries = Country::get(['id','country_name_'.$lang.' as country_name','code','created_at','updated_at']);
      if(count($countries)>0){
-       return '{"code":"200","message":"Success","data":'.json_encode($countries).'}';  
+//       return '{"code":"200","message":"Success","data":'.json_encode($countries).'}';
+         return response([
+             'status'    =>200,
+             'message'   =>'Success',
+             'data'      =>$countries,
+         ]);
      }else{
        $error = 'There is no countries';
-       return '{"code":"400","message":'.'['.json_encode($error).']}';
+//       return '{"code":"400","message":'.'['.json_encode($error).']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$error,
+         ]);
      }
    }
 
@@ -263,7 +343,11 @@ class AuthController extends Controller
        'country_id'=>'required|integer'
      ]);
      if($validator->fails()) {
-       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+//       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$validator->errors(),
+         ]);
      }
 
      $lang = $request->lang ? $request->lang : 'en';
@@ -271,10 +355,19 @@ class AuthController extends Controller
      $cities = City::where('country_id',$country_id)->get(['id','city_name_'.$lang.' as city_name','code','created_at','updated_at']);
 
      if(count($cities)>0){
-       return '{"code":"200","message":"Success","data":'.json_encode($cities).'}';  
+//       return '{"code":"200","message":"Success","data":'.json_encode($cities).'}';
+         return response([
+             'status'    =>200,
+             'message'   =>'Success',
+             'data'      =>$cities,
+         ]);
      }else{
        $error ='There is no cities';
-       return '{"code":"400","message":'.'['.json_encode($error).']}';
+//       return '{"code":"400","message":'.'['.json_encode($error).']}';
+         return response([
+             'status'    =>400,
+             'message'   =>$error,
+         ]);
      }
    }
 
