@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+# routes/web.php
+
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');

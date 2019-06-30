@@ -17,7 +17,7 @@ class VideoController extends Controller
 //          return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
             return response([
                 'status'    =>400,
-                'message'   =>$validator->errors(),
+                'message'   =>implode(",",$validator->errors()->all()),
             ]);
         }
 

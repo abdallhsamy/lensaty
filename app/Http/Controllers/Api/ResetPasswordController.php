@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
             return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
 //            return response([
 //                'status'    =>400,
-//                'message'   =>$validator->errors(),
+//                'message'   =>implode(",",$validator->errors()->all()),
 //            ]);
         }
 
@@ -70,7 +70,7 @@ class ResetPasswordController extends Controller
 //            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
             return response([
                 'status'    =>400,
-                'message'   =>$validator->errors(),
+                'message'   =>implode(",",$validator->errors()->all()),
             ]);
         }
         $email = $request->email;
@@ -102,7 +102,7 @@ class ResetPasswordController extends Controller
 //            return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
             return response([
                 'status'    =>400,
-                'message'   =>$validator->errors(),
+                'message'   =>implode(",",$validator->errors()->all()),
             ]);
         }
         $email = $request->email;

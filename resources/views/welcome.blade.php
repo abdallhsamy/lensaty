@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Styles -->
         <style>
@@ -90,15 +91,12 @@
                     Under Construction
                 </div>
 
-{{--                <div class="links">--}}
-{{--                    <a href="https://laravel.com/docs">Docs</a>--}}
-{{--                    <a href="https://laracasts.com">Laracasts</a>--}}
-{{--                    <a href="https://laravel-news.com">News</a>--}}
-{{--                    <a href="https://blog.laravel.com">Blog</a>--}}
-{{--                    <a href="https://nova.laravel.com">Nova</a>--}}
-{{--                    <a href="https://forge.laravel.com">Forge</a>--}}
-{{--                    <a href="https://github.com/laravel/laravel">GitHub</a>--}}
-{{--                </div>--}}
+                <div class="col-md-6 col-md-offset-4">
+                    <a href="{{ url('/login/github') }}" class="btn btn-github"><i class="fa fa-github"></i> Github</a>
+                    <a href="{{ url('/login/twitter') }}" class="btn btn-twitter" class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+                    <a href="{{ url('/login/facebook') }}" class="btn btn-facebook" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+                </div>
+
             </div>
         </div>
     </body>

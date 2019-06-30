@@ -28,7 +28,7 @@ class AuthController extends Controller
 //     	return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
          return response([
              'status'    =>400,
-             'message'   =>$validator->errors(),
+             'message'   =>implode(",",$validator->errors()->all()),
          ]);
      }
 
@@ -146,7 +146,7 @@ class AuthController extends Controller
 //       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
          return response([
              'status'    =>400,
-             'message'   =>$validator->errors(),
+             'message'   =>implode(",",$validator->errors()->all()),
          ]);
      }
 
@@ -218,7 +218,7 @@ class AuthController extends Controller
 	      'password'=>'required|string|min:8',
 	      'confirm_password'=>'required|string|min:8|same:password',
 	      'date_of_birth'=>'required',
-	      'mobile'=>'required|integer',
+	      'mobile'=>'required|string',
 	      'gender'=>'required',
 	      // 'city_id'=>'required|integer',
 	      // 'country_id'=>'required|integer'
@@ -228,7 +228,9 @@ class AuthController extends Controller
 //	   return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
              return response([
                  'status'    =>400,
-                 'message'   =>$validator->errors(),
+//                 'message'   =>implode(",",$validator->errors()->all()),
+                 'message'      => implode(",",$validator->errors()->all()),
+
              ]);
 
 	     }
@@ -282,7 +284,7 @@ class AuthController extends Controller
 //       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
          return response([
              'status'    =>400,
-             'message'   =>$validator->errors(),
+             'message'   =>implode(",",$validator->errors()->all()),
          ]);
      }
      $token = $request->token;
@@ -315,7 +317,7 @@ class AuthController extends Controller
 //       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
          return response([
              'status'    =>400,
-             'message'   =>$validator->errors(),
+             'message'   =>implode(",",$validator->errors()->all()),
          ]);
      }
      $lang = $request->lang ? $request->lang : 'en';
@@ -346,7 +348,7 @@ class AuthController extends Controller
 //       return '{"code":"400","message":' . '[' . json_encode($validator->errors()) . ']}';
          return response([
              'status'    =>400,
-             'message'   =>$validator->errors(),
+             'message'   =>implode(",",$validator->errors()->all()),
          ]);
      }
 

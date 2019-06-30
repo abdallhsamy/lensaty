@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    
+
 	protected $fillable = [
 		'name_en','name_ar','description_en','description_ar',
 		'price','image','delivery_fees','delivery_period','brand_id'
@@ -18,5 +18,8 @@ class Product extends Model
 
     public function ProductReview(){
         return $this->hasMany('App\ProductReview');
+    }
+    public function offers(){
+        return $this->hasMany(Offer::class);
     }
 }
